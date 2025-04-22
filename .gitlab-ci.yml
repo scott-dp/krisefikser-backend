@@ -1,0 +1,27 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  MAVEN_CLI_OPTS: "-B -f pom.xml"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository
+
+build-job:
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS clean compile
+
+unit-test-job:
+  stage: test
+  script:
+    - mvn $MAVEN_CLI_OPTS test
+  artifacts:
+    paths:
+      - target/site/jacoco
+    expire_in: 1 week
+  when: always
