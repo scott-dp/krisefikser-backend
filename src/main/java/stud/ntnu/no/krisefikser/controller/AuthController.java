@@ -4,15 +4,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import stud.ntnu.no.krisefikser.dto.LoginRequest;
 import stud.ntnu.no.krisefikser.dto.RegisterRequest;
 import stud.ntnu.no.krisefikser.service.UserService;
 
@@ -47,5 +50,28 @@ public class AuthController {
     String registerStatus = userService.register(registerRequest);
     logger.info("Auth: User registered successfully with email '{}'", registerRequest.getEmail());
     return ResponseEntity.ok(registerStatus);
+  }
+
+  /**
+   * Authenticate and return JWT token as cookie.
+   *
+   * @param loginRequest the login request containing email and password
+   * @param response    the HTTP response to set the cookie
+   * @return a response entity with the authentication status and JWT token as a cookie
+   */
+  @Operation(summary = "Login", description = "Authenticates user credentials and returns a JWT token as cookie if valid")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Login successful"),
+      @ApiResponse(responseCode = "401", description = "Invalid email or password"),
+      @ApiResponse(responseCode = "500", description = "Invalid signing key for signing JWT token")
+  })
+  @PostMapping("/login")
+  public ResponseEntity<String> authenticate(@RequestBody @Validated LoginRequest loginRequest, HttpServletResponse response) {
+    logger.info("Auth: Authenticating user with username '{}'", loginRequest.getEmail());
+    ResponseCookie cookie = userService.authenticateAndGetCookie(loginRequest);
+    logger.debug("Auth: JWT token created for username '{}': {}", loginRequest.getEmail(), cookie.getValue());
+    response.addHeader("Set-Cookie", cookie.toString());
+    logger.info("Auth: JWT token set as cookie for username '{}'", loginRequest.getEmail());
+    return ResponseEntity.ok("Login successful");
   }
 }
