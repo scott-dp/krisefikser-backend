@@ -35,9 +35,6 @@ public class JWTUtil {
   @Value("${security.jwt.secret-key}")
   private String secretKey;
 
-  @Value("${security.jwt.access-token-expiration}")
-  private long accessTokenExpiration;
-
   /**
    * Generates a JWT token for the specified user.
    *
@@ -45,17 +42,16 @@ public class JWTUtil {
    * @return a signed JWT token
    */
   public String generateToken(UserDetails userDetails) {
-    return generateToken(userDetails, accessTokenExpiration);
+    return generateJwtToken(userDetails);
   }
 
   /**
    * Generates a JWT token for the specified user with a custom expiration time.
    *
    * @param userDetails    the user details containing the username
-   * @param expirationTime the expiration time in milliseconds
    * @return a signed JWT token
    */
-  private String generateToken(UserDetails userDetails, long expirationTime) {
+  private String generateJwtToken(UserDetails userDetails) {
     Map<String, Object> claims = new HashMap<>();
     claims.put("roles", userDetails.getAuthorities().stream()
         .map(GrantedAuthority::getAuthority)
@@ -66,9 +62,9 @@ public class JWTUtil {
         .setClaims(claims)
         .setSubject(userDetails.getUsername())
         .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
         .signWith(getSigningKey(), SignatureAlgorithm.HS256)
         .compact();
+    //setExpiration omitted for never expiring token
   }
 
   /**
