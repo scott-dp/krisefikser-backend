@@ -16,7 +16,7 @@ public class SwaggerConfig {
    * Configures and provides a custom OpenAPI bean for the Findigo API.
    *
    * <p>This method initializes an OpenAPI object with metadata including the title, version,
-   * description, and contact information for the Findigo API.</p>
+   * description, and contact information for the Krisefikser API.</p>
    *
    * @return an {@link OpenAPI} instance with predefined API metadata.
    */
@@ -24,11 +24,11 @@ public class SwaggerConfig {
   public OpenAPI customOpenAPI() {
     return new OpenAPI()
         .info(new Info()
-            .title("Findigo API")
+            .title("Krisefikser API")
             .version("1.0")
-            .description("API for Findigo, the final project in IDATT2105 Full-stack applikasjonsutvikling")
+            .description("API for Krisefikser, the final project in IDATT2106 Systemutvikling 2 med smidig prosjekt")
             .contact(new Contact()
-                .name("Scott du Plessis, Aryan Malekian, Mikael Stray Frøyshov, Jonathan Hubertz")
+                .name("Scott du Plessis, Aryan Malekian, Mikael Stray Frøyshov, Jonathan Hubertz, Sander Nessa, Sander Berge, Usman Ghafoorzai")
                 .email("scottld@ntnu.no")));
   }
 }
