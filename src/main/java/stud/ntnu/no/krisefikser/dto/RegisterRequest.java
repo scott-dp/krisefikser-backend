@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
- * DTO for authentication request.
+ * DTO for register request.
  * <p>
- * Contains user credentials for login.
+ * Contains user credentials for registration.
  * </p>
  */
 @Data
@@ -20,30 +20,30 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Schema(description = "Request object containing user credentials for authentication.")
-public class AuthRequest {
+public class RegisterRequest {
   /**
-   * The first name of the user attempting to log in.
+   * The first name of the user attempting to register.
    */
   @NotBlank(message = "firstname cannot be blank")
   @Schema(description = "The firstname of the user attempting to log in", example = "john")
   private String firstName;
 
   /**
-   * The last name of the user attempting to log in.
+   * The last name of the user attempting to register.
    */
   @NotBlank(message = "lastname cannot be blank")
   @Schema(description = "The lastname of the user attempting to log in", example = "doe")
   private String lastName;
 
   /**
-   * The username of the user attempting to log in.
+   * The username of the user attempting to register.
    */
   @NotBlank(message = "email cannot be blank")
   @Schema(description = "The email of the user attempting to log in", example = "johndoe@example.com")
   private String email;
 
   /**
-   * The password of the user attempting to log in.
+   * The password of the user attempting to register.
    */
   @NotBlank(message = "Password cannot be blank")
   @Schema(description = "The password of the user attempting to log in", example = "password123")

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import stud.ntnu.no.krisefikser.dto.AuthRequest;
+import stud.ntnu.no.krisefikser.dto.RegisterRequest;
 import stud.ntnu.no.krisefikser.service.UserService;
 
 /**
@@ -42,7 +42,7 @@ public class AuthController {
       @ApiResponse(responseCode = "409", description = "User with the given email already exists")
   })
   @PostMapping("/register")
-  public ResponseEntity<String> register(@RequestBody @Validated AuthRequest registerRequest) {
+  public ResponseEntity<String> register(@RequestBody @Validated RegisterRequest registerRequest) {
     logger.info("Auth: Attempting to register user with email '{}'", registerRequest.getEmail());
     String registerStatus = userService.register(registerRequest);
     logger.info("Auth: User registered successfully with email '{}'", registerRequest.getEmail());
