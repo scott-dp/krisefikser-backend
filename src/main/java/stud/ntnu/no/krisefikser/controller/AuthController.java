@@ -39,13 +39,13 @@ public class AuthController {
   @Operation(summary = "Register new user", description = "Creates a new user account based on provided details")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "User registered successfully"),
-      @ApiResponse(responseCode = "409", description = "User with the given username already exists")
+      @ApiResponse(responseCode = "409", description = "User with the given email already exists")
   })
   @PostMapping("/register")
   public ResponseEntity<String> register(@RequestBody @Validated AuthRequest registerRequest) {
-    logger.info("Auth: Attempting to register user with username '{}'", registerRequest.getUsername());
+    logger.info("Auth: Attempting to register user with email '{}'", registerRequest.getEmail());
     String registerStatus = userService.register(registerRequest);
-    logger.info("Auth: User registered successfully with username '{}'", registerRequest.getUsername());
+    logger.info("Auth: User registered successfully with email '{}'", registerRequest.getEmail());
     return ResponseEntity.ok(registerStatus);
   }
 }

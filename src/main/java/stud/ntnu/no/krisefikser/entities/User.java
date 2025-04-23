@@ -30,6 +30,18 @@ public class User implements UserDetails {
   private Long id;
 
   /**
+   * First name of the user.
+   */
+  @Column(nullable = false)
+  private String firstName;
+
+  /**
+   * Last name of the user.
+   */
+  @Column(nullable = false)
+  private String lastName;
+
+  /**
    * Encrypted password of the user.
    */
   @Column(nullable = false)

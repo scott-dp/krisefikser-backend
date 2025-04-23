@@ -40,9 +40,9 @@ public enum CustomErrorMessage {
   CATEGORY_NOT_FOUND(404, "Category not found."),
 
   /**
-   * Error when the requested username is not found.
+   * Error when the request email is not found.
    */
-  USERNAME_NOT_FOUND(404, "Username not found."),
+  EMAIL_NOT_FOUND(404, "Email not found."),
 
   /**
    * Error when the requested attribute is not found.

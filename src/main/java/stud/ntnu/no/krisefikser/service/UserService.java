@@ -25,8 +25,8 @@ public class UserService {
    * @return a message indicating the registration status
    */
   public String register(AuthRequest registerRequest) {
-    if (userRepository.existsByUsername(registerRequest.getUsername())) {
-      logger.error("Username '{}' is already taken", registerRequest.getUsername());
+    if (userRepository.existsByEmail(registerRequest.getEmail())) {
+      logger.error("Email '{}' is already taken", registerRequest.getEmail());
       throw new EntityAlreadyExistsException(CustomErrorMessage.USERNAME_ALREADY_EXISTS);
     }
     //TODO keep implementing

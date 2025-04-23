@@ -21,13 +21,26 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Schema(description = "Request object containing user credentials for authentication.")
 public class AuthRequest {
+  /**
+   * The first name of the user attempting to log in.
+   */
+  @NotBlank(message = "firstname cannot be blank")
+  @Schema(description = "The firstname of the user attempting to log in", example = "john")
+  private String firstName;
+
+  /**
+   * The last name of the user attempting to log in.
+   */
+  @NotBlank(message = "lastname cannot be blank")
+  @Schema(description = "The lastname of the user attempting to log in", example = "doe")
+  private String lastName;
 
   /**
    * The username of the user attempting to log in.
    */
-  @NotBlank(message = "Username cannot be blank")
-  @Schema(description = "The username of the user attempting to log in", example = "johndoe")
-  private String username;
+  @NotBlank(message = "email cannot be blank")
+  @Schema(description = "The email of the user attempting to log in", example = "johndoe@example.com")
+  private String email;
 
   /**
    * The password of the user attempting to log in.
