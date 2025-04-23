@@ -10,7 +10,7 @@ import stud.ntnu.no.krisefikser.entities.ItemCategory;
  * This class provides a static method to convert an {@link ItemCategory} entity to a {@link ItemCategoryResponse} DTO.
  * </p>
  */
-@UtilityClass
+@Component
 public class ItemCategoryMapper {
 
   /**
