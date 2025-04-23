@@ -29,6 +29,7 @@ public class UserService {
       logger.error("Username '{}' is already taken", registerRequest.getUsername());
       throw new EntityAlreadyExistsException(CustomErrorMessage.USERNAME_ALREADY_EXISTS);
     }
+    //TODO keep implementing
     return null;
   }
 
