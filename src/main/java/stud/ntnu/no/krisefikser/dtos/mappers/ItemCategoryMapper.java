@@ -1,6 +1,6 @@
 package stud.ntnu.no.krisefikser.dtos.mappers;
 
-import lombok.experimental.UtilityClass;
+import org.springframework.stereotype.Component;
 import stud.ntnu.no.krisefikser.dtos.itemCategory.ItemCategoryResponse;
 import stud.ntnu.no.krisefikser.entities.ItemCategory;
 
