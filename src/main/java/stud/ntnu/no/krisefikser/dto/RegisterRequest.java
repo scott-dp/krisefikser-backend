@@ -36,7 +36,7 @@ public class RegisterRequest {
   private String lastName;
 
   /**
-   * The username of the user attempting to register.
+   * The email of the user attempting to register.
    */
   @NotBlank(message = "email cannot be blank")
   @Schema(description = "The email of the user attempting to log in", example = "johndoe@example.com")
