@@ -41,4 +41,10 @@ public class Household {
    */
   @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<User> users = new ArrayList<>();
+
+  /**
+   * List of storages associated with the household.
+   */
+  @OneToMany(mappedBy = "household", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Storage> storages = new ArrayList<>();
 }

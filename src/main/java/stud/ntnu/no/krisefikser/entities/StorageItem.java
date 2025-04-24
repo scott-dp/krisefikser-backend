@@ -8,10 +8,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 
 /**
- * Entity representing an item stored by a household or user.
+ * Entity representing a quantity of a specific item stored in a storage.
  * <p>
- * Each storage item references a predefined item and includes quantity,
- * expiration date, and metadata about its ownership.
+ * This is a join between a storage and an item, with metadata such as
+ * quantity, expiration date, and date added.
  * </p>
  */
 @Getter
@@ -23,50 +23,43 @@ import java.util.Date;
 @Table(name = "storage_item")
 public class StorageItem {
 
-  /**
-   * Unique identifier for the storage item.
-   */
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    /**
+     * Unique identifier for the storage item.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  /**
-   * The item this storage record refers to.
-   */
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "item_id", nullable = false)
-  private Item item;
+    /**
+     * The item this storage record refers to.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id", nullable = false)
+    private Item item;
 
-  /**
-   * The household that owns this storage item.
-   */
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "household_id")
-  private Household household;
+    /**
+     * The storage this item belongs to.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "storage_id", nullable = false)
+    private Storage storage;
 
-  /**
-   * The user that added or is associated with this item (optional).
-   */
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
-  private User user;
+    /**
+     * Quantity of the item stored.
+     */
+    @Column(nullable = false)
+    private double quantity;
 
-  /**
-   * Quantity of the item stored.
-   */
-  @Column(nullable = false)
-  private double quantity;
+    /**
+     * Expiration date of the stored item.
+     */
+    @Temporal(TemporalType.DATE)
+    private Date expirationDate;
 
-  /**
-   * Expiration date of the stored item.
-   */
-  @Temporal(TemporalType.DATE)
-  private Date expirationDate;
-
-  /**
-   * Timestamp of when the item was added to storage.
-   */
-  @CreationTimestamp
-  @Column(name = "added_date", updatable = false)
-  private Date addedDate;
+    /**
+     * Timestamp of when the item was added to storage.
+     */
+    @CreationTimestamp
+    @Column(name = "added_date", updatable = false)
+    private Date addedDate;
 }
