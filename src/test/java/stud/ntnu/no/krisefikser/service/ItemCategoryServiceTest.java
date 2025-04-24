@@ -5,9 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import stud.ntnu.no.krisefikser.dtos.itemCategory.ItemCategoryRequest;
 import stud.ntnu.no.krisefikser.dtos.itemCategory.ItemCategoryResponse;
 import stud.ntnu.no.krisefikser.entities.ItemCategory;
+import stud.ntnu.no.krisefikser.exception.customExceptions.EntityAlreadyExistsException;
 import stud.ntnu.no.krisefikser.repository.ItemCategoryRepository;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
@@ -49,5 +54,38 @@ public class ItemCategoryServiceTest {
       categories.stream().anyMatch(cat -> cat.getName().equals("Vann")),
       "Should contain 'Vann' category"
     );
+  }
+
+  @Test
+  public void testCreateCategory() {
+    ItemCategoryResponse newCategory = itemCategoryService.createCategory(new ItemCategoryRequest("Drikke"));
+
+    assertNotNull(newCategory, "Created category should not be null");
+    assertEquals("Drikke", newCategory.getName(), "Category name should be 'Drikke'");
+
+    List<ItemCategoryResponse> categories = itemCategoryService.getAllItemCategories();
+    assertEquals(3, categories.size(), "There should be 3 categories after creation");
+    assertTrue(
+      categories.stream().anyMatch(cat -> cat.getName().equals("Drikke")),
+      "Should contain 'Drikke' category"
+    );
+  }
+
+  @Test
+  public void testCreateDuplicateCategory() {
+    ItemCategoryRequest duplicateCategoryRequest = new ItemCategoryRequest("Mat");
+
+    // Attempt to create a category that already exists
+    Exception exception = assertThrows(
+      EntityAlreadyExistsException.class,
+      () -> itemCategoryService.createCategory(duplicateCategoryRequest)
+    );
+
+    String expectedMessage = "ItemCategory already exists.";
+    String actualMessage = exception.getMessage();
+
+    // Print the exception message for debugging
+    System.out.println("Exception message: " + actualMessage);
+    assertTrue(actualMessage.contains(expectedMessage), "Exception message should contain 'ItemCategory already exists.'");
   }
 }
