@@ -25,9 +25,10 @@ public interface EventRepository extends JpaRepository<Event, Long> {
   /**
    * Finds all events by their type ID.
    *
-   * @param id the ID of the event type
-   * @return a list of events with the specified type ID
+   * @param id the event-type ID
+   * @return the event with the specified type ID
    */
-  List<Event> findEventByEventTypeId(Long id);
+  List<Event> findEventByTypeId(Long id);
+
 
 }
