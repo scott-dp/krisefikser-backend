@@ -4,12 +4,19 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+
+import stud.ntnu.no.krisefikser.dtos.itemCategory.ItemCategoryRequest;
 import stud.ntnu.no.krisefikser.dtos.itemCategory.ItemCategoryResponse;
 import stud.ntnu.no.krisefikser.service.ItemCategoryService;
 
@@ -46,6 +53,26 @@ public class ItemCategoryController {
     List<ItemCategoryResponse> categories = itemCategoryService.getAllItemCategories();
     logger.info("Retrieved {} item categories", categories.size());
     return categories;
+  }
 
+  /**
+   * Creates a new item category.
+   *
+   * @param itemCategoryRequest the request containing the name of the new item category
+   * @return the created {@link ItemCategoryResponse} DTO
+   */
+  @Operation(summary = "Create new item category", description = "Adds a new item category to the system")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201", description = "Item category created successfully"),
+      @ApiResponse(responseCode = "400", description = "Invalid request data"),
+      @ApiResponse(responseCode = "500", description = "Internal server error while creating item category")
+  })
+  @PostMapping
+  @ResponseStatus(HttpStatus.CREATED)
+  public ItemCategoryResponse createCategory(@Valid @RequestBody ItemCategoryRequest itemCategoryRequest) {
+    logger.info("Creating new item category: {}", itemCategoryRequest.getName());
+    ItemCategoryResponse createdCategory = itemCategoryService.createCategory(itemCategoryRequest);
+    logger.info("Created new item category with ID: {}", createdCategory.getId());
+    return createdCategory;
   }
 }
