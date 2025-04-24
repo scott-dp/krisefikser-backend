@@ -13,6 +13,7 @@ import stud.ntnu.no.krisefikser.dto.LoginRequest;
 import stud.ntnu.no.krisefikser.dto.RegisterRequest;
 import stud.ntnu.no.krisefikser.exception.CustomErrorMessage;
 import stud.ntnu.no.krisefikser.exception.customExceptions.EntityAlreadyExistsException;
+import stud.ntnu.no.krisefikser.exception.customExceptions.UnauthorizedOperationException;
 import stud.ntnu.no.krisefikser.repository.UserRepository;
 
 import java.time.Duration;
@@ -76,6 +77,10 @@ public class UserService {
     );
 
     UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getEmail());
+    if (!userDetails.isEnabled()) {
+      logger.error("User '{}' is not enabled", request.getEmail());
+      throw new UnauthorizedOperationException(CustomErrorMessage.USER_NOT_ENABLED);
+    }
     String token = jwtUtil.generateToken(userDetails);
 
     logger.info("JWT token successfully generated for user '{}'", request.getEmail());

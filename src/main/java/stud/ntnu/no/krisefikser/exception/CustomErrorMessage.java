@@ -11,6 +11,7 @@ import lombok.Getter;
  */
 @Getter
 public enum CustomErrorMessage {
+  USER_NOT_ENABLED(403, "User is not enabled."),
   /**
    * Error when the request email is not found.
    */

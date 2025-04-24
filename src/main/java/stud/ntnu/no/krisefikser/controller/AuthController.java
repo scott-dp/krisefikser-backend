@@ -63,6 +63,7 @@ public class AuthController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Login successful"),
       @ApiResponse(responseCode = "401", description = "Invalid email or password"),
+      @ApiResponse(responseCode = "403", description = "User is not enabled"),
       @ApiResponse(responseCode = "500", description = "Invalid signing key for signing JWT token")
   })
   @PostMapping("/login")
