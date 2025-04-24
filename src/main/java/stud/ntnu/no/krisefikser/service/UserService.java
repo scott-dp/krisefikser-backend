@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseCookie;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,11 +14,13 @@ import stud.ntnu.no.krisefikser.config.JWTUtil;
 import stud.ntnu.no.krisefikser.dto.LoginRequest;
 import stud.ntnu.no.krisefikser.dto.RegisterRequest;
 import stud.ntnu.no.krisefikser.entities.User;
+import stud.ntnu.no.krisefikser.entities.VerificationToken;
 import stud.ntnu.no.krisefikser.exception.CustomErrorMessage;
 import stud.ntnu.no.krisefikser.exception.customExceptions.EntityAlreadyExistsException;
 import stud.ntnu.no.krisefikser.exception.customExceptions.UnauthorizedOperationException;
 import stud.ntnu.no.krisefikser.repository.UserRepository;
-
+import stud.ntnu.no.krisefikser.repository.VerificationTokenRepository;
+import org.springframework.mail.*;
 import java.time.Duration;
 import java.util.UUID;
 
@@ -34,6 +37,8 @@ public class UserService {
   private final AuthenticationManager authenticationManager;
   private final CustomUserDetailsService customUserDetailsService;
   private final JWTUtil jwtUtil;
+  private final VerificationTokenRepository verificationTokenRepository;
+  private final JavaMailSender mailSender;
   /**
    * Registers a new user with the provided details.
    *
@@ -45,15 +50,37 @@ public class UserService {
       logger.error("Email '{}' is already taken", registerRequest.getEmail());
       throw new EntityAlreadyExistsException(CustomErrorMessage.EMAIL_NOT_FOUND);
     }
-
+    logger.info("Registering user with email '{}'", registerRequest.getEmail());
     User user = new User()
         .setEmail(registerRequest.getEmail())
         .setPassword(passwordEncoder.encode(registerRequest.getPassword())); //enabled is set automaticalliy to false
     //TODO set roles if needed
     userRepository.save(user);
-    //Now make a verification token for enabling user
-    String token = UUID.randomUUID().toString();
+    logger.info("User with email '{}' registered successfully, the account is not yet enabled", registerRequest.getEmail());
+
+    createVerificationTokenAndSendVerificationEmail(user);
     return null;
+  }
+
+  /**
+   * Creates a verification token for the user and sends a verification email.
+   *
+   * @param user the user to create a verification token for
+   */
+  private void createVerificationTokenAndSendVerificationEmail(User user) {
+    logger.info("Creating verification token for user '{}'", user.getEmail());
+    String token = UUID.randomUUID().toString();
+    VerificationToken verificationToken = new VerificationToken().setToken(token).setUser(user);
+    verificationTokenRepository.save(verificationToken);
+    logger.info("Verification token created for user '{}'", user.getEmail());
+    SimpleMailMessage message = new SimpleMailMessage();
+    message.setTo(user.getEmail());
+    message.setSubject("Complete Registration!");
+    message.setText("To confirm your account, please click here: " +
+        "http://localhost:5173/verify?token=" + token);
+
+    mailSender.send(message);
+    logger.info("Verification email sent to '{}'", user.getEmail());
   }
 
   /**
