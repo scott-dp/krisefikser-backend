@@ -17,6 +17,7 @@ import stud.ntnu.no.krisefikser.dto.RegisterRequest;
 import stud.ntnu.no.krisefikser.entities.User;
 import stud.ntnu.no.krisefikser.entities.VerificationToken;
 import stud.ntnu.no.krisefikser.repository.VerificationTokenRepository;
+
 import stud.ntnu.no.krisefikser.service.UserService;
 
 /**
