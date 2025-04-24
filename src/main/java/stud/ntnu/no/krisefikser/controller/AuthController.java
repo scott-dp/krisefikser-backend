@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import stud.ntnu.no.krisefikser.dto.LoginRequest;
-import stud.ntnu.no.krisefikser.dto.RegisterRequest;
+
+import stud.ntnu.no.krisefikser.dtos.auth.LoginRequest;
+import stud.ntnu.no.krisefikser.dtos.auth.RegisterRequest;
 import stud.ntnu.no.krisefikser.service.UserService;
 
 /**

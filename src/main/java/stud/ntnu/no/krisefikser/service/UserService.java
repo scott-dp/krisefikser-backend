@@ -9,8 +9,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import stud.ntnu.no.krisefikser.config.JWTUtil;
-import stud.ntnu.no.krisefikser.dto.LoginRequest;
-import stud.ntnu.no.krisefikser.dto.RegisterRequest;
+import stud.ntnu.no.krisefikser.dtos.auth.LoginRequest;
+import stud.ntnu.no.krisefikser.dtos.auth.RegisterRequest;
 import stud.ntnu.no.krisefikser.exception.CustomErrorMessage;
 import stud.ntnu.no.krisefikser.exception.customExceptions.EntityAlreadyExistsException;
 import stud.ntnu.no.krisefikser.repository.UserRepository;
