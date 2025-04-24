@@ -84,8 +84,6 @@ public class ItemCategoryServiceTest {
     String expectedMessage = "ItemCategory already exists.";
     String actualMessage = exception.getMessage();
 
-    // Print the exception message for debugging
-    System.out.println("Exception message: " + actualMessage);
     assertTrue(actualMessage.contains(expectedMessage), "Exception message should contain 'ItemCategory already exists.'");
   }
 }
