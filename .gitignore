@@ -8,9 +8,14 @@
 /dataSources/
 /dataSources.local.xml
 
+# Ignore target directory
+target/
+
 # Ignore macOS system file
 .DS_Store
 
 # Ignore JetBrains IDE (e.g., IntelliJ IDEA, WebStorm) project settings
 .idea/
 
+# Ignore VSCode settings
+.vscode/

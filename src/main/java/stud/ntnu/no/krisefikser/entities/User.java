@@ -53,6 +53,13 @@ public class User implements UserDetails {
    */
   @Column(unique = true, nullable = false)
   private String email;
+  
+   /**
+   * The household this user is associated with.
+   */
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "household_id")
+  private Household household;
 
   public String getUsername() {
     return email;
