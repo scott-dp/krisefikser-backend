@@ -5,4 +5,5 @@ import stud.ntnu.no.krisefikser.entities.User;
 import stud.ntnu.no.krisefikser.entities.VerificationToken;
 
 public interface VerificationTokenRepository extends JpaRepository<VerificationToken, Long> {
+  VerificationToken findByToken(String token);
 }

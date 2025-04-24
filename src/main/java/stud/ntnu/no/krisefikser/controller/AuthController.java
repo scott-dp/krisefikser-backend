@@ -11,12 +11,12 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import stud.ntnu.no.krisefikser.dto.LoginRequest;
 import stud.ntnu.no.krisefikser.dto.RegisterRequest;
+import stud.ntnu.no.krisefikser.entities.User;
+import stud.ntnu.no.krisefikser.entities.VerificationToken;
+import stud.ntnu.no.krisefikser.repository.VerificationTokenRepository;
 import stud.ntnu.no.krisefikser.service.UserService;
 
 /**
@@ -31,6 +31,7 @@ import stud.ntnu.no.krisefikser.service.UserService;
 public class AuthController {
   private static final Logger logger = LogManager.getLogger(AuthController.class);
   private final UserService userService;
+  private final VerificationTokenRepository tokenRepository;
 
 
   /**
@@ -47,9 +48,9 @@ public class AuthController {
   @PostMapping("/register")
   public ResponseEntity<String> register(@RequestBody @Validated RegisterRequest registerRequest) {
     logger.info("Auth: Attempting to register user with email '{}'", registerRequest.getEmail());
-    String registerStatus = userService.register(registerRequest);
+    userService.register(registerRequest);
     logger.info("Auth: User registered successfully with email '{}'", registerRequest.getEmail());
-    return ResponseEntity.ok(registerStatus);
+    return ResponseEntity.ok("User registered successfully, please check your email to verify your account");
   }
 
   /**
@@ -74,5 +75,23 @@ public class AuthController {
     response.addHeader("Set-Cookie", cookie.toString());
     logger.info("Auth: JWT token set as cookie for username '{}'", loginRequest.getEmail());
     return ResponseEntity.ok("Login successful");
+  }
+
+  /**
+   * Verify the email address using the provided token.
+   *
+   * @param token the verification token
+   * @return a response entity with the verification status
+   */
+  @Operation(summary = "Verify email", description = "Verifies the email address using the provided token")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Email verified successfully"),
+      @ApiResponse(responseCode = "404", description = "Invalid token")
+  })
+  @GetMapping("/verify")
+  public ResponseEntity<String> verifyEmail(@RequestParam("token") String token) {
+    userService.enableUser(token);
+
+    return ResponseEntity.ok("Email verified successfully!");
   }
 }
