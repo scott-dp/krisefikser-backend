@@ -31,8 +31,8 @@ public class EventResponse {
       example = "{\"type\": \"Point\", \"coordinates\": [10.3951, 63.4305]}")
   private String geometryGeoJson;
 
-  @Schema(description = "Name of the event type", example = "Natural Disaster")
-  private String eventTypeName;
+  @Schema(description = "EventType of the event", example = "Natural Disaster")
+  private EventTypeResponse eventType;
 
   @Schema(description = "Severity of the event", example = "DANGER")
   private EventSeverity severity;
