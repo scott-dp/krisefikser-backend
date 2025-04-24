@@ -1,6 +1,7 @@
 package stud.ntnu.no.krisefikser.entities;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,10 +54,25 @@ public class User implements UserDetails {
    */
   @Column(unique = true, nullable = false)
   private String email;
+  
+   /**
+   * The household this user is associated with.
+   */
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "household_id")
+  private Household household;
+
+  /**
+   * Indicates whether the user is enabled. Has to be manually set to true, this happens when the user
+   * is verified through their email.
+   */
+  @Column(name = "enabled", nullable = false)
+  private boolean enabled = false;
 
   public String getUsername() {
     return email;
   }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     //TODO implement getauthorities correctly
@@ -99,12 +115,11 @@ public class User implements UserDetails {
 
   /**
    * Indicates whether the user is enabled.
-   * Always returns {@code true}, meaning all users are enabled.
    *
-   * @return {@code true} since all users are enabled by default.
+   * @return true if the user is enabled, false otherwise.
    */
   @Override
   public boolean isEnabled() {
-    return true;
+    return enabled;
   }
 }

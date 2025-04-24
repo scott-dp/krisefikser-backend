@@ -1,4 +1,4 @@
-package stud.ntnu.no.krisefikser.dto;
+package stud.ntnu.no.krisefikser.dtos.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

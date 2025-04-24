@@ -1,4 +1,4 @@
-package stud.ntnu.no.krisefikser.dto;
+package stud.ntnu.no.krisefikser.dtos.event;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
