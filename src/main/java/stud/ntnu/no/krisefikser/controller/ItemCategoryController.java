@@ -65,7 +65,8 @@ public class ItemCategoryController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Item category created successfully"),
       @ApiResponse(responseCode = "400", description = "Invalid request data"),
-      @ApiResponse(responseCode = "500", description = "Internal server error while creating item category")
+      @ApiResponse(responseCode = "500", description = "Internal server error while creating item category"),
+      @ApiResponse(responseCode = "409", description = "Item category already exists")
   })
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
