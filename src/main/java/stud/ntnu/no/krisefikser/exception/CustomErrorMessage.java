@@ -19,7 +19,12 @@ public enum CustomErrorMessage {
   /**
    * Error when an internal server error occurs.
    */
-  INTERNAL_SERVER_ERROR(500, "An internal server error occurred.");
+  INTERNAL_SERVER_ERROR(500, "An internal server error occurred."),
+
+  /**
+   * Error when GeoJson is not valid.
+   */
+   GEOJSON_NOT_VALID(400, "GeoJson data is not valid."),;
 
   /**
    * The HTTP status code associated with the error.
