@@ -1,4 +1,4 @@
-package stud.ntnu.no.krisefikser.dto.mappers;
+package stud.ntnu.no.krisefikser.dtos.mappers;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -7,8 +7,8 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.geojson.GeoJsonReader;
 import org.springframework.stereotype.Service;
 import stud.ntnu.no.krisefikser.entities.Event;
-import stud.ntnu.no.krisefikser.dto.EventRequest;
-import stud.ntnu.no.krisefikser.dto.EventResponse;
+import stud.ntnu.no.krisefikser.dtos.event.EventRequest;
+import stud.ntnu.no.krisefikser.dtos.event.EventResponse;
 import stud.ntnu.no.krisefikser.entities.EventType;
 import stud.ntnu.no.krisefikser.exception.CustomErrorMessage;
 import stud.ntnu.no.krisefikser.exception.customExceptions.InvalidGeoJsonException;

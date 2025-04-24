@@ -1,8 +1,8 @@
-package stud.ntnu.no.krisefikser.dto.mappers;
+package stud.ntnu.no.krisefikser.dtos.mappers;
 
 import lombok.experimental.UtilityClass;
-import stud.ntnu.no.krisefikser.dto.EventTypeRequest;
-import stud.ntnu.no.krisefikser.dto.EventTypeResponse;
+import stud.ntnu.no.krisefikser.dtos.event.EventTypeRequest;
+import stud.ntnu.no.krisefikser.dtos.event.EventTypeResponse;
 import stud.ntnu.no.krisefikser.entities.EventType;
 
 @UtilityClass
