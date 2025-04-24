@@ -15,8 +15,6 @@ import stud.ntnu.no.krisefikser.service.ItemCategoryService;
 
 import java.util.List;
 
-// TODO: Add tests
-
 /**
  * Controller for handling itemCategory related operations.
  * <p>

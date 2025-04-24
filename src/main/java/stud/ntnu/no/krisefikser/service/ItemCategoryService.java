@@ -12,8 +12,6 @@ import stud.ntnu.no.krisefikser.repository.ItemCategoryRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//TODO: Add tests
-
 /**
  * Service class for managing ItemCategory entities.
  * <p>
