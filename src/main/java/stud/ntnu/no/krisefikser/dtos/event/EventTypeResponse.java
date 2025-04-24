@@ -16,6 +16,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
     "Contains name and description.")
 public class EventTypeResponse {
 
+  @Schema(description = "ID of the event type", example = "1")
+  private Long id;
+
   @Schema(description = "Name of the event type", example = "Natural Disaster")
   private String name;
 

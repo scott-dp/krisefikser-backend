@@ -11,10 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import stud.ntnu.no.krisefikser.exception.customExceptions.AppEntityNotFoundException;
-import stud.ntnu.no.krisefikser.exception.customExceptions.EditedValueUnchangedException;
-import stud.ntnu.no.krisefikser.exception.customExceptions.EntityAlreadyExistsException;
-import stud.ntnu.no.krisefikser.exception.customExceptions.EntityOperationException;
+import stud.ntnu.no.krisefikser.exception.customExceptions.*;
 
 import java.time.LocalDateTime;
 
@@ -146,6 +143,15 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(IllegalStateException.class)
   public ResponseEntity<ErrorDetail> handleIllegalStateException(@NonNull IllegalStateException e, WebRequest request) {
     return createErrorResponseEntity(HttpStatus.CONFLICT, e, request);
+  }
+
+  /**
+   * Handles {@link InvalidGeoJsonException} when the provided GeoJSON is invalid.
+   */
+  @ExceptionHandler(InvalidGeoJsonException.class)
+  public ResponseEntity<ErrorDetail>
+  handleInvalidGeoJsonException(@NonNull InvalidGeoJsonException e, WebRequest request) {
+    return createErrorResponseEntity(e.getErrorMessage(), e, request);
   }
 
   /**
