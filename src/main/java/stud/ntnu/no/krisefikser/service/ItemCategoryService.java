@@ -5,8 +5,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import stud.ntnu.no.krisefikser.dtos.itemCategory.ItemCategoryRequest;
 import stud.ntnu.no.krisefikser.dtos.itemCategory.ItemCategoryResponse;
 import stud.ntnu.no.krisefikser.dtos.mappers.ItemCategoryMapper;
+import stud.ntnu.no.krisefikser.entities.ItemCategory;
+import stud.ntnu.no.krisefikser.exception.CustomErrorMessage;
+import stud.ntnu.no.krisefikser.exception.customExceptions.EntityAlreadyExistsException;
 import stud.ntnu.no.krisefikser.repository.ItemCategoryRepository;
 
 import java.util.List;
@@ -38,5 +42,28 @@ public class ItemCategoryService {
         .collect(Collectors.toList());
     logger.info("Retrieved {} item categories", categories.size());
     return categories;
+  }
+
+  /**
+   * Creates a new item category based on the provided request.
+   *
+   * @param itemCategoryRequest the request containing the details of the new item category
+   * @return the created {@link ItemCategoryResponse} DTO
+   * @throws EntityAlreadyExistsException if an item category with the same name already exists
+   */
+  public ItemCategoryResponse createCategory(ItemCategoryRequest itemCategoryRequest) {
+    String name = itemCategoryRequest.getName();
+    logger.info("Creating new item category: {}", itemCategoryRequest.getName());
+    
+    // Check if the category already exists
+    if(categoryRepository.existsByNameIgnoreCase(name)) {
+      logger.error("Item category with name '{}' already exists", name);
+      throw new EntityAlreadyExistsException(CustomErrorMessage.ITEM_CATEGORY_ALREADY_EXISTS);
+    }
+
+    ItemCategory itemCategory = ItemCategoryMapper.toEntity(itemCategoryRequest);
+    ItemCategory savedItemCategory = categoryRepository.save(itemCategory);
+    logger.info("Created new item category with ID: {}", savedItemCategory.getId());
+    return ItemCategoryMapper.toDto(savedItemCategory);
   }
 }
