@@ -2,8 +2,9 @@ package stud.ntnu.no.krisefikser.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 import stud.ntnu.no.krisefikser.dtos.storageItem.StorageItemResponse;
 import stud.ntnu.no.krisefikser.entities.StorageItem;
 import stud.ntnu.no.krisefikser.dtos.mappers.StorageItemMapper;
@@ -16,13 +17,11 @@ import stud.ntnu.no.krisefikser.repository.StorageItemRepository;
  * </p>
  */
 @Service
+@RequiredArgsConstructor
 public class StorageItemService {
 
-  @Autowired
-  private StorageItemMapper storageItemMapper;
-
-  @Autowired
-  private StorageItemRepository storageItemRepository;
+  private final StorageItemMapper storageItemMapper;
+  private final StorageItemRepository storageItemRepository;
 
   /**
    * Retrieves all storage items for a given Storage Id and ItemCategory Id and
@@ -36,7 +35,7 @@ public class StorageItemService {
     List<StorageItem> storageItems = storageItemRepository.findByStorageAndCategory(storageId, categoryId);
     
     return storageItems.stream()
-        .map(storageItemMapper::toStorageItemResponse)
+        .map(storageItemMapper::toDto)
         .toList();
   }
 

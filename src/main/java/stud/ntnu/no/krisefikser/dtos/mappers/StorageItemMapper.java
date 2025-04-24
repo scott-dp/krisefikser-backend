@@ -20,7 +20,7 @@ public class StorageItemMapper {
    * @param storageItem the entity to be converted
    * @return the corresponding StorageItemResponse DTO
    */
-  public StorageItemResponse toStorageItemResponse(StorageItem storageItem) {
+  public StorageItemResponse toDto(StorageItem storageItem) {
     if (storageItem == null) {
       return null;
     }
