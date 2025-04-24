@@ -59,10 +59,10 @@ public class UserService {
         .setLastName(registerRequest.getLastName())
         .setPassword(passwordEncoder.encode(registerRequest.getPassword())); //enabled is set automaticalliy to false
     //TODO set roles if needed
+    createVerificationTokenAndSendVerificationEmail(user);
+    //only save user if mail is sent
     userRepository.save(user);
     logger.info("User with email '{}' registered successfully, the account is not yet enabled", registerRequest.getEmail());
-
-    createVerificationTokenAndSendVerificationEmail(user);
   }
 
   /**
@@ -74,8 +74,6 @@ public class UserService {
     logger.info("Creating verification token for user '{}'", user.getEmail());
     String token = UUID.randomUUID().toString();
     VerificationToken verificationToken = new VerificationToken().setToken(token).setUser(user);
-    verificationTokenRepository.save(verificationToken);
-    logger.info("Verification token created for user '{}'", user.getEmail());
 
     SimpleMailMessage message = new SimpleMailMessage();
     message.setTo(user.getEmail());
@@ -85,6 +83,8 @@ public class UserService {
 
     mailSender.send(message);
     logger.info("Verification email sent to '{}'", user.getEmail());
+    verificationTokenRepository.save(verificationToken); //Only save the token if the email is sent
+    logger.info("Verification token saved for user '{}'", user.getEmail());
   }
 
   /**
