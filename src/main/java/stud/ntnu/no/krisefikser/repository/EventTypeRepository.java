@@ -28,4 +28,12 @@ public interface EventTypeRepository extends JpaRepository<EventType, Long> {
    */
   List<EventType> findEventTypeByName(String name);
 
+  /**
+   * Checks if an event type with the specified name exists.
+   *
+   * @param name the name of the event type to check
+   * @return {@code true} if an event type with the specified name exists, otherwise {@code false}
+   */
+  boolean existsByName(String name);
+
 }
