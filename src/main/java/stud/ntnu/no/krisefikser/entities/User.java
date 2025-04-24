@@ -62,10 +62,11 @@ public class User implements UserDetails {
   private Household household;
 
   /**
-   * Indicates whether the user is enabled.
+   * Indicates whether the user is enabled. Has to be manually set to true, this happens when the user
+   * is verified through their email.
    */
-  @Column(name = "is_enabled", nullable = false)
-  private boolean isEnabled = false;
+  @Column(name = "enabled", nullable = false)
+  private boolean enabled = false;
 
   public String getUsername() {
     return email;
@@ -117,6 +118,6 @@ public class User implements UserDetails {
    */
   @Override
   public boolean isEnabled() {
-    return isEnabled;
+    return enabled;
   }
 }

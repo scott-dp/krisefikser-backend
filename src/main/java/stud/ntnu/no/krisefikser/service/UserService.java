@@ -7,16 +7,19 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import stud.ntnu.no.krisefikser.config.JWTUtil;
 import stud.ntnu.no.krisefikser.dto.LoginRequest;
 import stud.ntnu.no.krisefikser.dto.RegisterRequest;
+import stud.ntnu.no.krisefikser.entities.User;
 import stud.ntnu.no.krisefikser.exception.CustomErrorMessage;
 import stud.ntnu.no.krisefikser.exception.customExceptions.EntityAlreadyExistsException;
 import stud.ntnu.no.krisefikser.exception.customExceptions.UnauthorizedOperationException;
 import stud.ntnu.no.krisefikser.repository.UserRepository;
 
 import java.time.Duration;
+import java.util.UUID;
 
 /**
  * Service class for handling user operations such as authentication,
@@ -27,6 +30,7 @@ import java.time.Duration;
 public class UserService {
   private static final Logger logger = LogManager.getLogger(UserService.class);
   private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
   private final CustomUserDetailsService customUserDetailsService;
   private final JWTUtil jwtUtil;
@@ -41,7 +45,14 @@ public class UserService {
       logger.error("Email '{}' is already taken", registerRequest.getEmail());
       throw new EntityAlreadyExistsException(CustomErrorMessage.EMAIL_NOT_FOUND);
     }
-    //TODO keep implementing
+
+    User user = new User()
+        .setEmail(registerRequest.getEmail())
+        .setPassword(passwordEncoder.encode(registerRequest.getPassword())); //enabled is set automaticalliy to false
+    //TODO set roles if needed
+    userRepository.save(user);
+    //Now make a verification token for enabling user
+    String token = UUID.randomUUID().toString();
     return null;
   }
 
