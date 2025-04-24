@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.geojson.GeoJsonReader;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import stud.ntnu.no.krisefikser.entities.Event;
 import stud.ntnu.no.krisefikser.dto.EventRequest;
 import stud.ntnu.no.krisefikser.dto.EventResponse;
@@ -57,5 +56,24 @@ public class EventMapper {
 
     logger.info("Mapped EventRequest to Event entity: {}", event.getId());
     return event;
+  }
+
+  /**
+   * Converts a {@link Event} entity to a {@link EventResponse} DTO.
+   *
+   * @param event the {@link Event} entity to convert
+   * @return the corresponding {@link EventResponse} DTO
+   */
+  public EventResponse toDto(Event event) {
+    logger.debug("Mapping Event entity to EventResponse DTO for event ID {}", event.getId());
+
+    return new EventResponse()
+        .setId(event.getId())
+        .setTitle(event.getTitle())
+        .setDescription(event.getDescription())
+        .setSeverity(event.getSeverity())
+        .setGeometryGeoJson(event.getGeometry().toString())
+        .setEventType(EventTypeMapper.toDto(event.getType()));
+
   }
 }
