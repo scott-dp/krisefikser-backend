@@ -18,6 +18,8 @@ import stud.ntnu.no.krisefikser.exception.customExceptions.InvalidGeoJsonExcepti
 import stud.ntnu.no.krisefikser.repository.EventRepository;
 import stud.ntnu.no.krisefikser.repository.EventTypeRepository;
 
+import java.util.List;
+
 /**
  * Service class for managing events.
  *
@@ -60,6 +62,43 @@ public class EventService {
 
     logger.info("Event added with ID: {}", event.getId());
     return eventMapper.toDto(event);
+  }
+
+  /**
+   * Retrieves all events from the system.
+   *
+   * <p>
+   * This method fetches all events from the database and maps them to {@link EventResponse} DTOs.
+   * </p>
+   *
+   * @return a list of {@link EventResponse} objects representing all events
+   */
+  @Transactional
+  public List<EventResponse> getAllEvents() {
+    logger.info("Fetching all events");
+    List<EventResponse> events = eventRepository.findAll().stream()
+        .map(eventMapper::toDto)
+        .toList();
+    logger.info("Fetched {} events", events.size());
+    return events;
+  }
+
+  /**
+   * Retrieves an event by its ID.
+   *
+   * <p>
+   * Method to retrieve an event from the database using its ID. Utilizes the {@link EventRepository}
+   * to fetch the event.
+   * </p>
+   *
+   * @param eventId the ID of the event to retrieve
+   * @return the {@link Event} entity
+   */
+  @Transactional
+  public Event getEventById(Long eventId) {
+    logger.info("Fetching event with ID: {}", eventId);
+    return eventRepository.findById(eventId)
+        .orElseThrow(() -> new AppEntityNotFoundException(CustomErrorMessage.EVENT_NOT_FOUND));
   }
 
   /**
