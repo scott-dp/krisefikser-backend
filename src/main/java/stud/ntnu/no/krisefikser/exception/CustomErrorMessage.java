@@ -15,11 +15,22 @@ public enum CustomErrorMessage {
    * Error when the request email is not found.
    */
   EMAIL_NOT_FOUND(404, "Email not found."),
+
   // --- Generic ---
   /**
    * Error when an internal server error occurs.
    */
   INTERNAL_SERVER_ERROR(500, "An internal server error occurred."),
+
+  /**
+   * Event not found.
+   */
+  EVENT_NOT_FOUND(404, "Event not found."),
+
+  /**
+   * Event type not found.
+   */
+  EVENT_TYPE_NOT_FOUND(404, "Event type not found."),
 
   /**
    * Error when GeoJson is not valid.
