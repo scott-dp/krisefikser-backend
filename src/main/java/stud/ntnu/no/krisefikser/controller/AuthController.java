@@ -64,8 +64,7 @@ public class AuthController {
   @Operation(summary = "Login", description = "Authenticates user credentials and returns a JWT token as cookie if valid")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Login successful"),
-      @ApiResponse(responseCode = "401", description = "Invalid email or password"),
-      @ApiResponse(responseCode = "403", description = "User is not enabled"),
+      @ApiResponse(responseCode = "401", description = "Invalid email or password, or user is not valid"),
       @ApiResponse(responseCode = "500", description = "Invalid signing key for signing JWT token")
   })
   @PostMapping("/login")

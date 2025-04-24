@@ -1,5 +1,6 @@
 package stud.ntnu.no.krisefikser.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +46,6 @@ public class UserService {
    * Registers a new user with the provided details.
    *
    * @param registerRequest the registration request containing user details
-   * @return a message indicating the registration status
    */
   public void register(RegisterRequest registerRequest) {
     if (userRepository.existsByEmail(registerRequest.getEmail())) {
@@ -59,10 +59,10 @@ public class UserService {
         .setLastName(registerRequest.getLastName())
         .setPassword(passwordEncoder.encode(registerRequest.getPassword())); //enabled is set automaticalliy to false
     //TODO set roles if needed
+    createVerificationTokenAndSendVerificationEmail(user);
+    //only save user if mail is sent
     userRepository.save(user);
     logger.info("User with email '{}' registered successfully, the account is not yet enabled", registerRequest.getEmail());
-
-    createVerificationTokenAndSendVerificationEmail(user);
   }
 
   /**
@@ -74,8 +74,6 @@ public class UserService {
     logger.info("Creating verification token for user '{}'", user.getEmail());
     String token = UUID.randomUUID().toString();
     VerificationToken verificationToken = new VerificationToken().setToken(token).setUser(user);
-    verificationTokenRepository.save(verificationToken);
-    logger.info("Verification token created for user '{}'", user.getEmail());
 
     SimpleMailMessage message = new SimpleMailMessage();
     message.setTo(user.getEmail());
@@ -85,6 +83,8 @@ public class UserService {
 
     mailSender.send(message);
     logger.info("Verification email sent to '{}'", user.getEmail());
+    verificationTokenRepository.save(verificationToken); //Only save the token if the email is sent
+    logger.info("Verification token saved for user '{}'", user.getEmail());
   }
 
   /**
@@ -119,10 +119,7 @@ public class UserService {
     );
 
     UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getEmail());
-    if (!userDetails.isEnabled()) {
-      logger.error("User '{}' is not enabled", request.getEmail());
-      throw new UnauthorizedOperationException(CustomErrorMessage.USER_NOT_ENABLED);
-    }
+
     String token = jwtUtil.generateToken(userDetails);
 
     logger.info("JWT token successfully generated for user '{}'", request.getEmail());

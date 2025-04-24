@@ -1,6 +1,7 @@
 package stud.ntnu.no.krisefikser.entities;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -71,6 +72,7 @@ public class User implements UserDetails {
   public String getUsername() {
     return email;
   }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     //TODO implement getauthorities correctly

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -153,5 +154,13 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(MailException.class)
   public ResponseEntity<ErrorDetail> handleMailException(@NonNull MailException e, WebRequest request) {
     return createErrorResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, e, request);
+  }
+
+  /**
+   * Handles {@link DisabledException} when a user is disabled.
+   */
+  @ExceptionHandler(DisabledException.class)
+  public ResponseEntity<ErrorDetail> handleDisabledException(@NonNull DisabledException e, WebRequest request) {
+    return createErrorResponseEntity(HttpStatus.UNAUTHORIZED, e, request);
   }
 }
