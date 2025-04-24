@@ -1,16 +1,19 @@
 package stud.ntnu.no.krisefikser.controller;
 
-import java.util.List;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import lombok.RequiredArgsConstructor;
 import stud.ntnu.no.krisefikser.dtos.itemCategory.ItemCategoryResponse;
 import stud.ntnu.no.krisefikser.service.ItemCategoryService;
 
-// TODO: Add tests and logging
+import java.util.List;
 
 /**
  * Controller for handling itemCategory related operations.
@@ -21,12 +24,28 @@ import stud.ntnu.no.krisefikser.service.ItemCategoryService;
 @RestController
 @RequestMapping("/api/itemcategories")
 @RequiredArgsConstructor
+@Tag(name = "Item Categories", description = "Endpoints for managing item categories")
 public class ItemCategoryController {
 
+  private static final Logger logger = LogManager.getLogger(ItemCategoryController.class);
   private final ItemCategoryService itemCategoryService;
 
+  /**
+   * Retrieves all item categories.
+   *
+   * @return a list of {@link ItemCategoryResponse} DTOs representing all item categories
+   */
+  @Operation(summary = "Get all item categories", description = "Retrieves a list of all item categories")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Successfully retrieved item categories"),
+      @ApiResponse(responseCode = "500", description = "Internal server error while retrieving item categories")
+  })
   @GetMapping
   public List<ItemCategoryResponse> getAllItemCategories() {
-    return itemCategoryService.getAllItemCategories();
+    logger.info("Fetching all item categories");
+    List<ItemCategoryResponse> categories = itemCategoryService.getAllItemCategories();
+    logger.info("Retrieved {} item categories", categories.size());
+    return categories;
+
   }
 }
