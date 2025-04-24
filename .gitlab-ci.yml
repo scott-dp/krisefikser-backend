@@ -26,3 +26,6 @@ unit-test-job:
       - target/site/jacoco
     expire_in: 1 week
   when: always
+
+deployment:
+

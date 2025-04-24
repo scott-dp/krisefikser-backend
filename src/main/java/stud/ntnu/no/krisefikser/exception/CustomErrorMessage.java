@@ -11,10 +11,17 @@ import lombok.Getter;
  */
 @Getter
 public enum CustomErrorMessage {
+  USER_NOT_ENABLED(403, "User is not enabled."),
   /**
    * Error when the request email is not found.
    */
   EMAIL_NOT_FOUND(404, "Email not found."),
+
+  /**
+   * Error when the verification token isn't found.
+   */
+  TOKEN_NOT_FOUND(404, "Token not found."),
+
   // --- Generic ---
   /**
    * Error when an internal server error occurs.
