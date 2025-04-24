@@ -55,6 +55,8 @@ public class UserService {
     logger.info("Registering user with email '{}'", registerRequest.getEmail());
     User user = new User()
         .setEmail(registerRequest.getEmail())
+        .setFirstName(registerRequest.getFirstName())
+        .setLastName(registerRequest.getLastName())
         .setPassword(passwordEncoder.encode(registerRequest.getPassword())); //enabled is set automaticalliy to false
     //TODO set roles if needed
     userRepository.save(user);
