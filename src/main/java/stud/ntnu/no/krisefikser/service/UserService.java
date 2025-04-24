@@ -1,5 +1,6 @@
 package stud.ntnu.no.krisefikser.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,7 +46,6 @@ public class UserService {
    * Registers a new user with the provided details.
    *
    * @param registerRequest the registration request containing user details
-   * @return a message indicating the registration status
    */
   public void register(RegisterRequest registerRequest) {
     if (userRepository.existsByEmail(registerRequest.getEmail())) {
@@ -119,10 +119,7 @@ public class UserService {
     );
 
     UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getEmail());
-    if (!userDetails.isEnabled()) {
-      logger.error("User '{}' is not enabled", request.getEmail());
-      throw new UnauthorizedOperationException(CustomErrorMessage.USER_NOT_ENABLED);
-    }
+
     String token = jwtUtil.generateToken(userDetails);
 
     logger.info("JWT token successfully generated for user '{}'", request.getEmail());
