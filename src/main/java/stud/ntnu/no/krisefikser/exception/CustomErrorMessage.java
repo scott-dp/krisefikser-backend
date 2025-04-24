@@ -33,9 +33,14 @@ public enum CustomErrorMessage {
   EVENT_TYPE_NOT_FOUND(404, "Event type not found."),
 
   /**
+   * Event type already exists.
+   */
+  EVENT_TYPE_ALREADY_EXISTS(409, "Event type already exists."),
+
+  /**
    * Error when GeoJson is not valid.
    */
-   GEOJSON_NOT_VALID(400, "GeoJson data is not valid."),;
+  GEOJSON_NOT_VALID(400, "GeoJson data is not valid."),;
 
   /**
    * The HTTP status code associated with the error.
